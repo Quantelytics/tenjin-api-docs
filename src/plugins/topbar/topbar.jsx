@@ -145,7 +145,7 @@ export default class Topbar extends React.Component {
           </div>
         </div>
         <br />
-        <div className="topbar-bottom-line" />
+        {/* <div className="topbar-bottom-line" /> */}
       </div>
     )
   }
