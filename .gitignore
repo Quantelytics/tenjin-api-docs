@@ -16,7 +16,7 @@ docs/_book
 flavors/**/dist/*
 /lib
 /es
-dist/log*
+# dist/log*
 
 # Cypress
 test/e2e-cypress/screenshots
