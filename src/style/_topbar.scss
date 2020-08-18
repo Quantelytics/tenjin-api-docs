@@ -29,6 +29,13 @@
             padding: 0 10px;
         }
     }
+    .topbar-bottom-line
+    {
+        width: 100%;
+        height: 5px;
+        margin-top: -6px;
+        background-color: $topbar-bottom-line-color;
+    }
 
     .download-url-wrapper
     {

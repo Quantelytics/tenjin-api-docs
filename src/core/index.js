@@ -10,6 +10,8 @@ if (process.env.NODE_ENV !== "production" && typeof window !== "undefined") {
   win.Perf = require("react-dom/lib/ReactPerf")
 }
 
+const data = require('../tenjin-api.json');
+
 // eslint-disable-next-line no-undef
 const { GIT_DIRTY, GIT_COMMIT, PACKAGE_VERSION, HOSTNAME, BUILD_TIME } = buildInfo
 
@@ -28,7 +30,7 @@ export default function SwaggerUI(opts) {
     // Some general settings, that we floated to the top
     dom_id: null, // eslint-disable-line camelcase
     domNode: null,
-    spec: {},
+    spec: data,
     url: "",
     urls: null,
     layout: "BaseLayout",
@@ -73,11 +75,11 @@ export default function SwaggerUI(opts) {
     ],
 
     // Initial state
-    initialState: { },
+    initialState: {},
 
     // Inline Plugin
-    fn: { },
-    components: { },
+    fn: {},
+    components: {},
 
     syntaxHighlight: {
       activated: true,
@@ -109,12 +111,12 @@ export default function SwaggerUI(opts) {
     }, constructorConfig.initialState)
   }
 
-  if(constructorConfig.initialState) {
+  if (constructorConfig.initialState) {
     // if the user sets a key as `undefined`, that signals to us that we
     // should delete the key entirely.
     // known usage: Swagger-Editor validate plugin tests
     for (var key in constructorConfig.initialState) {
-      if(
+      if (
         constructorConfig.initialState.hasOwnProperty(key)
         && constructorConfig.initialState[key] === undefined
       ) {
@@ -123,7 +125,7 @@ export default function SwaggerUI(opts) {
     }
   }
 
-  let inlinePlugin = ()=> {
+  let inlinePlugin = () => {
     return {
       fn: constructorConfig.fn,
       components: constructorConfig.components,
@@ -141,7 +143,7 @@ export default function SwaggerUI(opts) {
     let mergedConfig = deepExtend({}, localConfig, constructorConfig, fetchedConfig || {}, queryConfig)
 
     // deep extend mangles domNode, we need to set it manually
-    if(domNode) {
+    if (domNode) {
       mergedConfig.domNode = domNode
     }
 
@@ -159,12 +161,12 @@ export default function SwaggerUI(opts) {
       }
     }
 
-    if(mergedConfig.domNode) {
+    if (mergedConfig.domNode) {
       system.render(mergedConfig.domNode, "App")
-    } else if(mergedConfig.dom_id) {
+    } else if (mergedConfig.dom_id) {
       let domNode = document.querySelector(mergedConfig.dom_id)
       system.render(domNode, "App")
-    } else if(mergedConfig.dom_id === null || mergedConfig.domNode === null) {
+    } else if (mergedConfig.dom_id === null || mergedConfig.domNode === null) {
       // do nothing
       // this is useful for testing that does not need to do any rendering
     } else {
