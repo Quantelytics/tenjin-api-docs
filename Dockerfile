@@ -10,7 +10,7 @@ LABEL maintainer="fehguy"
 
 ENV API_KEY "**None**"
 ENV SWAGGER_JSON "/app/swagger.json"
-ENV PORT 8080
+ENV PORT 5000
 ENV BASE_URL ""
 ENV SWAGGER_JSON_URL ""
 
@@ -27,6 +27,6 @@ RUN chmod +x /usr/share/nginx/run.sh && \
     chmod -R a+rw /var && \
     chmod -R a+rw /var/run
 
-EXPOSE 8080
+EXPOSE 5000
 
 CMD ["sh", "/usr/share/nginx/run.sh"]

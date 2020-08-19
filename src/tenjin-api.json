@@ -17,7 +17,7 @@
       "url": "http://localhost:8080/v1"
     },
     {
-      "url": "https://dev.api.tenjin-ai.com/v1"
+      "url": "https://unifimoney.api.tenjin-ai.com/v1"
     }
   ],
   "tags": [
@@ -41,7 +41,9 @@
   "paths": {
     "/Optimize/Symbols": {
       "post": {
-        "tags": ["Optimize"],
+        "tags": [
+          "Optimize"
+        ],
         "description": "Optimize a set of symbols and return optimal asset allocation for the selected assets based on Tenjin engine",
         "operationId": "OptimizeSymbols",
         "requestBody": {
@@ -158,7 +160,9 @@
     },
     "/ModelPortfolio": {
       "get": {
-        "tags": ["Portfolio"],
+        "tags": [
+          "Portfolio"
+        ],
         "description": "Get a Model Portfolio based on User's Risk Profile",
         "summary": "Get a Model portfolio for a given Risk Category",
         "operationId": "getModelPortfolio",
@@ -179,6 +183,14 @@
             "required": false,
             "schema": {
               "type": "boolean"
+            }
+          },
+          {
+            "name": "investAmt",
+            "in": "query",
+            "description": "Amount to be invested in Tenjin model portfolio. The optimizer uses this information to specify optimized allocation percentages.",
+            "schema": {
+              "type": "number"
             }
           }
         ],
@@ -230,7 +242,9 @@
     },
     "/PortfolioProjection": {
       "get": {
-        "tags": ["Portfolio"],
+        "tags": [
+          "Portfolio"
+        ],
         "description": "Get the short-term outlook for a portfolio, This is a time-series that can be graphed to show the projected growth of the portfolio over the next 1m, 3m and 6m",
         "summary": "Show Portfolio growth projection",
         "operationId": "getPortfolioProjection",
@@ -348,7 +362,9 @@
     },
     "/UserPortfolios": {
       "get": {
-        "tags": ["Portfolio"],
+        "tags": [
+          "Portfolio"
+        ],
         "description": "Get Portfolios for a particular User",
         "summary": "Get Portfolios for a user",
         "operationId": "getUserPortfolio",
@@ -394,10 +410,56 @@
       }
     },
     "/User": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Add a Tenjin User",
+        "description": "Add a User to Tenjin",
+        "operationId": "addUser",
+        "requestBody": {
+          "description": "User profile to add",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              },
+              "example": {
+                "address1": "101 Some Lane",
+                "city": "Smallville",
+                "country": "US",
+                "email": "superman@outlook.com",
+                "phone": "+19081112223",
+                "state": "NJ",
+                "userFullName": "Clark Kent",
+                "zip": "12345"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "User created",
+            "content": {}
+          },
+          "404": {
+            "description": "invalid input, object invalid",
+            "content": {}
+          },
+          "409": {
+            "description": "an existing item already exists",
+            "content": {}
+          }
+        },
+        "x-codegen-request-body-name": "User"
+      },
       "get": {
-        "tags": ["User"],
-        "summary": "Get User Profile (allowed for user only)",
-        "description": "Get a User Profile Get User Profile (allowed for user only)",
+        "tags": [
+          "User"
+        ],
+        "summary": "Get a User Profile",
+        "description": "Get a User Profile",
         "operationId": "getUser",
         "parameters": [
           {
@@ -428,7 +490,9 @@
         }
       },
       "put": {
-        "tags": ["User"],
+        "tags": [
+          "User"
+        ],
         "summary": "Update a Tenjin User",
         "description": "Update a Tenjin user details",
         "operationId": "updateUser",
@@ -438,6 +502,16 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/User"
+              },
+              "example": {
+                "address1": "101 Some Lane",
+                "city": "Smallville",
+                "country": "US",
+                "email": "superman@outlook.com",
+                "phone": "+19081112223",
+                "state": "NJ",
+                "userFullName": "Clark Kent",
+                "zip": "12345"
               }
             }
           },
@@ -458,49 +532,21 @@
           }
         },
         "x-codegen-request-body-name": "User"
-      },
-      "post": {
-        "tags": ["User"],
-        "summary": "Add a Tenjin User",
-        "description": "Add a User to Tenjin",
-        "operationId": "addUser",
-        "requestBody": {
-          "description": "User profile to add",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/User"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "User created",
-            "content": {}
-          },
-          "404": {
-            "description": "invalid input, object invalid",
-            "content": {}
-          },
-          "409": {
-            "description": "an existing item already exists",
-            "content": {}
-          }
-        },
-        "x-codegen-request-body-name": "User"
-      },
-      "delete": {
-        "tags": ["User"],
-        "summary": "Delete a Tenjin User",
-        "description": "Delete a User from Tenjin",
-        "operationId": "deleteUser",
+      }
+    },
+    "/User/deactivate": {
+      "put": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Deactivate a user Profile",
+        "description": "Deactivate a Tenjin User. The user can be activated a later stage",
+        "operationId": "deactivateUser",
         "parameters": [
           {
             "name": "userName",
             "in": "query",
-            "description": "UserName to delete",
+            "description": "userName for the User to deactivate. This is usually an email Id.",
             "required": true,
             "schema": {
               "type": "string"
@@ -509,7 +555,7 @@
         ],
         "responses": {
           "201": {
-            "description": "User deleted",
+            "description": "User deactivated",
             "content": {}
           },
           "400": {
@@ -520,13 +566,49 @@
             "description": "User does not exist",
             "content": {}
           }
-        },
-        "x-codegen-request-body-name": "User"
+        }
+      }
+    },
+    "/User/activate": {
+      "put": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Activate a deactivated user Profile",
+        "description": "Activate a Tenjin User who is currently in a deactivated state.",
+        "operationId": "activateUser",
+        "parameters": [
+          {
+            "name": "userName",
+            "in": "query",
+            "description": "userName for the User to deactivate. This is usually an email Id.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "User Activated",
+            "content": {}
+          },
+          "400": {
+            "description": "invalid input, object invalid",
+            "content": {}
+          },
+          "404": {
+            "description": "User does not exist",
+            "content": {}
+          }
+        }
       }
     },
     "/Portfolio": {
       "get": {
-        "tags": ["Portfolio"],
+        "tags": [
+          "Portfolio"
+        ],
         "summary": "Get Portfolio Details",
         "description": "Get Portfolio Details",
         "operationId": "getPortfolio",
@@ -559,7 +641,9 @@
         }
       },
       "put": {
-        "tags": ["Portfolio"],
+        "tags": [
+          "Portfolio"
+        ],
         "summary": "Update a Portfolio in Tenjin",
         "description": "Update a Portfolio in Tenjin",
         "operationId": "updatePortfolio",
@@ -591,7 +675,9 @@
         "x-codegen-request-body-name": "PortfolioId"
       },
       "post": {
-        "tags": ["Portfolio"],
+        "tags": [
+          "Portfolio"
+        ],
         "summary": "Add a Portfolio to Tenjin",
         "description": "Add a Portfolio to Tenjin",
         "operationId": "addPortfolio",
@@ -635,12 +721,16 @@
           }
         },
         "x-codegen-request-body-name": "Portfolio"
-      },
-      "delete": {
-        "tags": ["Portfolio"],
-        "summary": "Delete a Tenjin Portfolio",
-        "description": "Delete a Portfolio from Tenjin",
-        "operationId": "deletePortfolio",
+      }
+    },
+    "/Portfolio/deactivate": {
+      "put": {
+        "tags": [
+          "Portfolio"
+        ],
+        "summary": "Deactivate a Tenjin Portfolio",
+        "description": "Deactivate a Portfolio from Tenjin",
+        "operationId": "deactivatePortfolio",
         "parameters": [
           {
             "name": "accountId",
@@ -654,7 +744,43 @@
         ],
         "responses": {
           "201": {
-            "description": "Portfolio deleted",
+            "description": "Portfolio deactivated",
+            "content": {}
+          },
+          "400": {
+            "description": "invalid input, object invalid",
+            "content": {}
+          },
+          "404": {
+            "description": "Portfolio does not exist",
+            "content": {}
+          }
+        },
+        "x-codegen-request-body-name": "portfolioId"
+      }
+    },
+    "/Portfolio/activate": {
+      "put": {
+        "tags": [
+          "Portfolio"
+        ],
+        "summary": "Activate a deactivated Tenjin Portfolio",
+        "description": "Activate a deactivated Portfolio",
+        "operationId": "activatePortfolio",
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "query",
+            "description": "Account Id of the Portfolio to delete",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Portfolio activated",
             "content": {}
           },
           "400": {
@@ -671,7 +797,9 @@
     },
     "/RiskQuestionnaire": {
       "get": {
-        "tags": ["Risk Assessment"],
+        "tags": [
+          "Risk Assessment"
+        ],
         "summary": "Get a Risk Assessment Questionnaire",
         "description": "Get a Risk Assessment questionnaire to calculate the risk profile of an investor",
         "operationId": "riskQuestions",
@@ -698,7 +826,9 @@
     },
     "/CalculateRiskCategory": {
       "post": {
-        "tags": ["Risk Assessment"],
+        "tags": [
+          "Risk Assessment"
+        ],
         "summary": "Get Risk score based on Risk Survey responses",
         "description": "Get an investors risk score based on responses to the risk questionnaire",
         "operationId": "CalculateRiskCategory",
@@ -710,17 +840,19 @@
                 "type": "object",
                 "properties": {
                   "userName": {
-                    "type": "string"
-                  },
-                  "saveScore": {
-                    "type": "boolean",
-                    "description": "Save the Risk score to User profile?"
+                    "type": "string",
+                    "example": "john.doe@email.com"
                   },
                   "userResponses": {
                     "type": "array",
                     "items": {
                       "$ref": "#/components/schemas/RiskResponses"
-                    }
+                    },
+                    "example": [
+                      "questionId:1 selectedId:1",
+                      "questionId:2 selectedId:1",
+                      "questionId:3 selectedId:2"
+                    ]
                   }
                 }
               }
@@ -736,8 +868,13 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "riskScore": {
-                      "type": "number"
+                    "category": {
+                      "type": "integer",
+                      "example": 1
+                    },
+                    "description": {
+                      "type": "string",
+                      "example": "Very Conservative"
                     }
                   }
                 }
@@ -753,7 +890,9 @@
     },
     "/UserRiskCategory": {
       "get": {
-        "tags": ["Risk Assessment"],
+        "tags": [
+          "Risk Assessment"
+        ],
         "summary": "Get an Investors Risk Category",
         "description": "Get an Investors Risk category based on previously conducted Risk Assessment",
         "operationId": "RiskScore",
@@ -808,7 +947,9 @@
     },
     "/RiskCategories": {
       "get": {
-        "tags": ["Risk Assessment"],
+        "tags": [
+          "Risk Assessment"
+        ],
         "summary": "Get a list of Risk Categories supported",
         "description": "Get the list of Risk Categories supported",
         "operationId": "RiskCategories",
@@ -842,77 +983,56 @@
   "components": {
     "schemas": {
       "Portfolio": {
-        "required": ["accountId"],
+        "required": [
+          "accountId",
+          "userName"
+        ],
         "type": "object",
         "properties": {
+          "userName": {
+            "type": "string",
+            "description": "Email id  of the user who owns this portfolio. Should be the userName on the user account.",
+            "example": "john.doe@email.com"
+          },
           "accountId": {
             "type": "string",
+            "description": "Account Id associated with the portfolio",
             "example": "A100091-1023"
           },
-          "recType": {
-            "type": "string"
-          },
-          "isLatest": {
-            "type": "string"
-          },
           "portName": {
-            "type": "string"
-          },
-          "portType": {
-            "type": "string"
+            "type": "string",
+            "description": "Portfolio Name",
+            "example": "Roll Over IRA account -"
           },
           "accountType": {
             "type": "string"
           },
-          "riskTolerance": {
-            "type": "number"
-          },
-          "isDraft": {
-            "type": "boolean"
-          },
           "goal": {
-            "type": "string"
+            "type": "string",
+            "example": "College Funding"
           },
           "currency": {
             "type": "string"
           },
           "taxDefer": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Is this Account Tax-deferred",
+            "example": true
           },
           "assets": {
             "type": "array",
+            "description": "Assets held in the account",
             "items": {
               "$ref": "#/components/schemas/OwnedAssets"
             }
-          },
-          "updUser": {
-            "type": "string"
-          },
-          "updTime": {
-            "type": "string",
-            "format": "date-time",
-            "example": "2016-08-29T09:12:33.001Z"
-          },
-          "createUser": {
-            "type": "string"
-          },
-          "createTime": {
-            "type": "string",
-            "format": "date-time",
-            "example": "2016-08-29T09:12:33.001Z"
-          },
-          "owner": {
-            "type": "string"
-          },
-          "lastSynced": {
-            "type": "string",
-            "format": "date-time",
-            "example": "2016-08-29T09:12:33.001Z"
           }
         }
       },
       "OwnedAssets": {
-        "required": ["ticker", "unitsHeld"],
+        "required": [
+          "ticker",
+          "unitsHeld"
+        ],
         "type": "object",
         "properties": {
           "ticker": {
@@ -930,48 +1050,66 @@
         }
       },
       "User": {
-        "required": ["email", "userFullName"],
+        "required": [
+          "email",
+          "userFullName"
+        ],
         "type": "object",
         "properties": {
           "email": {
             "type": "string",
-            "example": "john.doe@email.com"
+            "description": "Email id of the user. This is also the users 'username'. (Required)"
           },
           "phone": {
-            "type": "string"
+            "type": "string",
+            "description": "Phone number of the user"
           },
           "userFullName": {
             "type": "string",
-            "example": "John Doe"
+            "description": "Full name of the user in 'FirstName LastName' format. (Required)"
           },
           "lastName": {
-            "type": "string"
+            "type": "string",
+            "description": "Last Name of the user"
           },
           "firstName": {
-            "type": "string"
+            "type": "string",
+            "description": "First Name of the user"
           },
           "address1": {
-            "type": "string"
+            "type": "string",
+            "description": "Address Line 1"
           },
           "address2": {
-            "type": "string"
+            "type": "string",
+            "description": "Address Line 2"
           },
           "city": {
-            "type": "string"
+            "type": "string",
+            "description": "City of residence"
           },
           "state": {
-            "type": "string"
+            "type": "string",
+            "description": "State of residence"
           },
           "zip": {
-            "type": "string"
+            "type": "string",
+            "description": "Zip code of residence"
           },
           "country": {
-            "type": "string"
+            "type": "string",
+            "description": "Country of residence"
+          },
+          "active": {
+            "type": "boolean",
+            "description": "Indicates if this user is Active in Tenjin or not."
           }
         }
       },
       "RiskQuestions": {
-        "required": ["questionId"],
+        "required": [
+          "questionId"
+        ],
         "type": "object",
         "properties": {
           "questionId": {
@@ -1015,17 +1153,21 @@
         }
       },
       "RiskResponses": {
-        "required": ["questionId", "selectedId", "choiceScore"],
+        "required": [
+          "questionId",
+          "selectedId"
+        ],
         "type": "object",
         "properties": {
           "questionId": {
-            "type": "integer"
+            "type": "integer",
+            "description": "Id of the Risk Survey question",
+            "example": 1
           },
           "selectedId": {
-            "type": "integer"
-          },
-          "choiceScore": {
-            "type": "integer"
+            "type": "integer",
+            "description": "Id of the selected Answer for the Risk Survey question",
+            "example": 2
           }
         }
       }

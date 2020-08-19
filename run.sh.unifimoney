@@ -1,0 +1,6 @@
+cp ~/tenjin-api/tenjin-api.json ~/tenjin-api-docs/src/
+sed -i s/dev.api.tenjin-ai.com/unifimoney.api.tenjin-ai.com/g src/tenjin-api.json
+npm run build
+sudo docker build -t quantelai/tenjin-apidocs-um .
+sudo docker push quantelai/tenjin-apidocs-um
+sudo docker run -it -p 5000:5000 quantelai/tenjin-apidocs-um
